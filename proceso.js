@@ -1,33 +1,41 @@
-
+var textarea = document.getElementById('textarea');
+var R0E0 = document.getElementById("R0D")
+var R0E1 = document.getElementById("R1D")
+var R0E2 = document.getElementById("R2D")
+var R0E3 = document.getElementById("R3D")
+var R0HE0 = document.getElementById("R0H")
+var R0HE1 = document.getElementById("R1H")
+var R0HE2 = document.getElementById("R2H")
+var R0HE3 = document.getElementById("R3H")
 var Program = {
     memory: [],
-    regs: [0, 1, 2, 3],
+    regs: [0, 0, 0, 0],
     pc: 0,
     HALT: false,
+    codigo: 0,
     load: function (prg) {
         let text = prg;
- 
-        const myArray = text.split(",")
+        let myArray = text.split(",")
         // for (let i = 0; i < myArray.length; i++) {
         //     let n = myArray[i].
         //     n.replace(/^\s+|\s+$/gm,'');
         //     myArray[i] = n+""
         // }
-        Program.memory = myArray;
+        this.memory.push(...myArray);
     },
     runone: function () {
         if (this.HALT)
             return;
-
+        Program.codigo += Program.memory.length;
         for (let i = 0; i < Program.memory.length; i++) {
             if (Program.memory[i] == "R0") {
-                Program.memory[i] = this.regs[0]
-            }else if (Program.memory[i] == "R1") {
-                Program.memory[i] = this.regs[1]
-            }else if (Program.memory[i] == "R2") {
-                Program.memory[i] = this.regs[2]
-            }else if(Program.memory[i] == "R3"){
-                Program.memory[i] = this.regs[3]
+                Program.memory[i] = 0
+            } else if (Program.memory[i] == "R1") {
+                Program.memory[i] = 1
+            } else if (Program.memory[i] == "R2") {
+                Program.memory[i] = 2
+            } else if (Program.memory[i] == "R3") {
+                Program.memory[i] = 3
             }
         }
 
@@ -48,30 +56,36 @@ var Program = {
             // movv rdst, val
             case 'MOVV':
                 Program.pc++;
-                var rdst = this.memory[pc++];
-                var val = this.memory[pc++];
-                regs[rdst] = val;
+                var rdst = this.memory[this.pc++];
+                var val = this.memory[this.pc++];
+                this.regs[rdst] = parseInt(val);
                 break;
             // add rdst, rsrc
-            case 20:
-                console.log("add")
+            case 'ADD':
+                Program.pc++;
+                var rdst = this.memory[this.pc++];
+                var rsrc = this.memory[this.pc++];
+                this.regs[rdst] += this.regs[rsrc];
                 break;
 
             // sub rdst, rsrc
-            case 21:
-                console.log("sub")
+            case 'SUB':
+                Program.pc++;
+                var rdst = this.memory[this.pc++];
+                var rsrc = this.memory[this.pc++];
+                this.regs[rdst] -= this.regs[rsrc];
                 break;
 
-                
+
             // mul rdst, rsrc
-            case 21:
-                console.log("mul")
+            case "MUL":
+                Program.pc++;
+                var rdst = this.memory[this.pc++];
+                var rsrc = this.memory[this.pc++];
+                this.regs[rdst] *= this.regs[rsrc];
                 break;
 
-            // print reg
-            case 60:
-                console.log("Print")
-                break;
+         
 
             // halt
             case 255:
@@ -80,12 +94,12 @@ var Program = {
                 break;
         }
         fillTable();
-        if (Program.pc >= Program.memory.length) {
+        if (Program.pc >= Program.codigo) {
             Program.HALT = true;
         }
     },
     run: function () {
-        while (!this.HALT) {
+        while (!this.HALT && Program.memory.length <= 256) {
             Program.runone();
         }
     }
@@ -94,27 +108,33 @@ var Program = {
 
 
 function iniciar() {
-    //console.log(document.getElementById("code"))
-    var textarea = document.getElementById('textarea');
     var value = textarea.value;
+    Program.HALT = false
     Program.load(value);
     Program.run();
-    Program.HALT=false
+}
+function clean() {
+    textarea.value = ""
+    Program.memory = []
+    Program.regs = [0, 0, 0, 0]
+    Program.pc = 0,
+        Program.HALT = false,
+        Program.codigo = 0
+    clearTable()
+}
+function clearTable() {
+    R0E0.textContent = 0
+    R0E1.textContent = 0
+    R0E2.textContent = 0
+    R0E3.textContent = 0
 }
 
-
-//console.log("This program prints Fibonacci numbers");
-
-
-function loop() {
-    document.getElementById("code");
-
-}
 
 function fillTable() {
-    document.getElementById("R0D").value = Program.regs[0],
-        document.getElementById("R1D").value = Program.regs[1],
-        document.getElementById("R2D").value = Program.regs[2],
-        document.getElementById("R3D").value = Program.regs[3]
-    console.log(Program.regs)
+    R0E0.textContent = Program.regs[0]
+    R0HE0.textContent = "0"
+    R0E1.textContent = Program.regs[1]
+    R0E2.textContent = Program.regs[2]
+    R0E3.textContent = Program.regs[3]
 }
+
