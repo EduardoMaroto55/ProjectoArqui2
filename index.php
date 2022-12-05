@@ -49,8 +49,6 @@
     <button id="cleanIT" onclick="clean()">CLEAN</button>
     <br>
     <textarea type="text" id="textarea" style="width: 410px; height: 368px;"></textarea>
-
-    <script  src="proceso.js"></script>
     </div>
 
     <div class="Registros">
@@ -82,9 +80,7 @@
           </tr>
       </table> 
     </div>
-    
-
-    
+    <script  src='proceso.js' defer></script>
 </body>
 
 </html>
