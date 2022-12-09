@@ -1,12 +1,13 @@
 var textarea = document.getElementById('textarea');
-var R0E0 = document.getElementById("R0D")
+var R0E0 = document.getElementById('A')
 var R0E1 = document.getElementById("R1D")
 var R0E2 = document.getElementById("R2D")
 var R0E3 = document.getElementById("R3D")
 var R0HE0 = document.getElementById("R0H")
 var R0HE1 = document.getElementById("R1H")
 var R0HE2 = document.getElementById("R2H")
-var R0HE3 = document.getElementById("R3H")
+var R0HE3 = document.getElementById("R3H");
+
 var Program = {
     memory: [],
     regs: [0, 0, 0, 0],
@@ -15,7 +16,8 @@ var Program = {
     codigo: 0,
     load: function (prg) {
         let text = prg;
-        let myArray = text.split(",")
+        let myArray = text.split(/,|\n/)
+         console.log("Este es el codigo de entrada: "+myArray)
         // for (let i = 0; i < myArray.length; i++) {
         //     let n = myArray[i].
         //     n.replace(/^\s+|\s+$/gm,'');
@@ -127,14 +129,25 @@ function clearTable() {
     R0E1.textContent = 0
     R0E2.textContent = 0
     R0E3.textContent = 0
+    R0HE0.textContent = 0
+    R0HE1.textContent = 0
+    R0HE2.textContent = 0
+    R0HE3.textContent = 0
+}
+function tohex(params) {
+    parseInt(params)
+    return params.toString(16)
 }
 
 
 function fillTable() {
     R0E0.textContent = Program.regs[0]
-    R0HE0.textContent = "0"
+    R0HE0.textContent = tohex(Program.regs[0])
     R0E1.textContent = Program.regs[1]
+    R0HE1.textContent = tohex(Program.regs[1])
     R0E2.textContent = Program.regs[2]
+    R0HE2.textContent = tohex(Program.regs[2])
     R0E3.textContent = Program.regs[3]
+    R0HE3.textContent = tohex(Program.regs[3])
 }
 

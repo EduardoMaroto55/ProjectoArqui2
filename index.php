@@ -50,10 +50,9 @@
     <br>
     <textarea type="text" id="textarea" style="width: 410px; height: 368px;"></textarea>
 
-    <script  src="proceso.js"></script>
     </div>
 
-    <div class="Registros">
+    <div id="TablaRegistro" class="Registros">
     <table>
         <tr>
           <th>Registros</th>
@@ -62,7 +61,7 @@
         </tr>
         <tr>
           <td>R0</td>
-          <td id="R0D">0</td>
+          <td id="A">0</td>
           <td id="R0H">0</td>
         </tr>
         <tr>
@@ -82,7 +81,7 @@
           </tr>
       </table> 
     </div>
-    
+    <script  src="proceso.js"></script>
 
     
 </body>
