@@ -7,6 +7,10 @@ var R0HE0 = document.getElementById("R0H")
 var R0HE1 = document.getElementById("R1H")
 var R0HE2 = document.getElementById("R2H")
 var R0HE3 = document.getElementById("R3H");
+var Acu = document.getElementById("Acumulador")
+var Est = document.getElementById("Estado")
+var Es1 = document.getElementById("Es1")
+var Es2 = document.getElementById("Es2")
 
 var Program = {
     memory: [],
@@ -15,9 +19,12 @@ var Program = {
     HALT: false,
     codigo: 0,
     load: function (prg) {
+        R0E0.style.backgroundColor = "white"
+        R0E1.style.backgroundColor = "white"
+        R0E2.style.backgroundColor = "white"
+        R0E3.style.backgroundColor = "white"
         let text = prg;
         let myArray = text.split(/,|\n/)
-         console.log("Este es el codigo de entrada: "+myArray)
         // for (let i = 0; i < myArray.length; i++) {
         //     let n = myArray[i].
         //     n.replace(/^\s+|\s+$/gm,'');
@@ -41,10 +48,8 @@ var Program = {
             }
         }
 
-        console.log(Program.memory)
         var instr = Program.memory[Program.pc];
-
-        console.log(instr)
+        var estado = 0
         switch (instr) {
             // movr rdst, rsrc 
             case 'MOVR':
@@ -53,21 +58,30 @@ var Program = {
                 var rdst = this.memory[this.pc++];
                 var rsrc = this.memory[this.pc++];
                 this.regs[rdst] = this.regs[rsrc];
-
+                grafico("","","","",rdst, rsrc)
                 break;
             // movv rdst, val
             case 'MOVV':
                 Program.pc++;
                 var rdst = this.memory[this.pc++];
                 var val = this.memory[this.pc++];
+                if (val < 0) {
+                    estado = 1
+                }
                 this.regs[rdst] = parseInt(val);
+                grafico("","","","",rdst)
                 break;
             // add rdst, rsrc
             case 'ADD':
                 Program.pc++;
                 var rdst = this.memory[this.pc++];
                 var rsrc = this.memory[this.pc++];
+                var registro1 = this.regs[rdst]
                 this.regs[rdst] += this.regs[rsrc];
+                if (this.regs[rdst] < 0) {
+                    estado = 1
+                }
+                grafico(this.regs[rdst], estado, registro1, this.regs[rsrc],rdst,rsrc)
                 break;
 
             // sub rdst, rsrc
@@ -75,7 +89,12 @@ var Program = {
                 Program.pc++;
                 var rdst = this.memory[this.pc++];
                 var rsrc = this.memory[this.pc++];
+                var registro1 = this.regs[rdst]
                 this.regs[rdst] -= this.regs[rsrc];
+                if (this.regs[rdst] < 0) {
+                    estado = 1
+                }
+                grafico(this.regs[rdst], estado, registro1, this.regs[rsrc],rdst,rsrc)
                 break;
 
 
@@ -84,10 +103,15 @@ var Program = {
                 Program.pc++;
                 var rdst = this.memory[this.pc++];
                 var rsrc = this.memory[this.pc++];
+                var registro1 = this.regs[rdst]
                 this.regs[rdst] *= this.regs[rsrc];
+                if (this.regs[rdst] < 0) {
+                    estado = 1
+                }
+                grafico(this.regs[rdst], estado, registro1, this.regs[rsrc],rdst,rsrc)
                 break;
 
-         
+
 
             // halt
             case 255:
@@ -133,12 +157,16 @@ function clearTable() {
     R0HE1.textContent = 0
     R0HE2.textContent = 0
     R0HE3.textContent = 0
+    Acu.value = ""
+    Est.value = ""
+    Es1.value = ""
+    Es2.value = ""
 }
+
 function tohex(params) {
     parseInt(params)
     return params.toString(16)
 }
-
 
 function fillTable() {
     R0E0.textContent = Program.regs[0]
@@ -151,3 +179,41 @@ function fillTable() {
     R0HE3.textContent = tohex(Program.regs[3])
 }
 
+function grafico(p1, p2, p3, p4,r1,r2) {
+    Acu.value = p1
+    Est.value = p2
+    Es1.value = p3
+    Es2.value = p4
+
+    switch (r1) {
+        case 0:
+            R0E0.style.backgroundColor = "#90EE90"
+            break;
+        case 1:
+            R0E1.style.backgroundColor = "#90EE90"
+            break;
+        case 2:
+            R0E2.style.backgroundColor = "#90EE90"
+            break;
+        case 3:
+            R0E3.style.backgroundColor = "#90EE90"
+            break;
+        default:
+            break;
+    }switch (r2) {
+        case 0:
+            R0E0.style.backgroundColor = "#90EE90"
+            break;
+        case 1:
+            R0E1.style.backgroundColor = "#90EE90"
+            break;
+        case 2:
+            R0E2.style.backgroundColor = "#90EE90"
+            break;
+        case 3:
+            R0E3.style.backgroundColor = "#90EE90"
+            break;
+        default:
+            break;
+    }
+}
