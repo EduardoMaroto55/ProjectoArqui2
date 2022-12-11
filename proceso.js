@@ -11,6 +11,7 @@ var Acu = document.getElementById("Acumulador")
 var Est = document.getElementById("Estado")
 var Es1 = document.getElementById("Es1")
 var Es2 = document.getElementById("Es2")
+var Counter = document.getElementById("programCounter")
 
 var Program = {
     memory: [],
@@ -119,6 +120,7 @@ var Program = {
                 Program.HALT = true;
                 break;
         }
+        Counter.textContent = "Program counter: "+Program.pc
         fillTable();
         if (Program.pc >= Program.codigo) {
             Program.HALT = true;
@@ -161,6 +163,11 @@ function clearTable() {
     Est.value = ""
     Es1.value = ""
     Es2.value = ""
+    R0E0.style.backgroundColor = "white"
+    R0E1.style.backgroundColor = "white"
+    R0E2.style.backgroundColor = "white"
+    R0E3.style.backgroundColor = "white"
+    Counter.textContent= "Program counter:"
 }
 
 function tohex(params) {
